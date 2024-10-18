@@ -26,9 +26,9 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
-
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 function EmployeeList() {
     const [employees, setEmployees] = useState([]);
     const [offices, setOffices] = useState([]);
@@ -58,9 +58,6 @@ function EmployeeList() {
     });
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-
-    
-
 
     useEffect(() => {
         fetchEmployees();
@@ -233,25 +230,28 @@ function EmployeeList() {
         setOpenForm(false);
     };
 
-    const handleDisableEmployee = async (employee) => {
-        if (!employee || !employee.EmpId) {
-            console.error('Please provide both Employee ID and action');
-            return;
+   const handleToggleEmployeeStatus = async (employee) => {
+    if (!employee || !employee.EmpId) {
+        console.error('Please provide both Employee ID and action');
+        return;
+    }
+
+    try {
+        const action = employee.IsActive ? 'disable' : 'enable';
+        const response = await axios.post('https://namami-infotech.com/PushpRatan/src/employee/disable_employee.php', {
+            EmpId: employee.EmpId,
+            action: action
+        });
+
+        if (response.data.success) {
+            fetchEmployees(); // Refresh the employee list after the update
+        } else {
+            console.error('Error:', response.data.message);
         }
-        try {
-            const response = await axios.post('https://namami-infotech.com/PushpRatan/src/employee/disable_employee.php', {
-                EmpId: employee.EmpId,
-                action: 'disable'
-            });
-            if (response.data.success) {
-                fetchEmployees();
-            } else {
-                console.error('Error:', response.data.message);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
 
     const filteredEmployees = employees.filter(employee => {
         const lowerCaseSearchTerm = searchTerm.toLowerCase();
@@ -331,12 +331,12 @@ function EmployeeList() {
                                         >
                                             <EditIcon />
                                         </IconButton>
-                                        <IconButton
-                                            color="error"
-                                            onClick={() => handleDisableEmployee(employee)}
-                                        >
-                                            <DeleteIcon />
-                                        </IconButton>
+                                       <IconButton
+            color={employee.IsActive ? 'error' : 'success'}
+            onClick={() => handleToggleEmployeeStatus(employee)}
+        >
+            {employee.IsActive ? <CloseIcon /> : <CheckCircleIcon />}
+        </IconButton>
                                        
                                        
                                     </TableCell>
@@ -388,17 +388,26 @@ function EmployeeList() {
                                     value={formData.Password}
                                     onChange={(e) => setFormData({ ...formData, Password: e.target.value })}
                                     required
+                                    disabled={formMode === 'edit'}
                                 />
                             </Grid>
-                            <Grid item xs={12} md={6}>
-                                <TextField
-                                    fullWidth
-                                    label="Mobile"
-                                    value={formData.Mobile}
-                                    onChange={(e) => setFormData({ ...formData, Mobile: e.target.value })}
-                                    required
-                                />
-                            </Grid>
+                           <Grid item xs={12} md={6}>
+  <TextField
+    fullWidth
+    label="Mobile"
+    value={formData.Mobile}
+    onChange={(e) => {
+      const value = e.target.value;
+      if (value.length <= 10) {
+        setFormData({ ...formData, Mobile: value });
+      }
+    }}
+    required
+    type="number"
+    inputProps={{ maxLength: 10 }}
+  />
+</Grid>
+
                             <Grid item xs={12} md={6}>
                                 <TextField
                                     fullWidth
@@ -409,40 +418,45 @@ function EmployeeList() {
                                     required
                                 />
                             </Grid>
+                           <Grid item xs={12} md={6}>
+  <TextField
+    select
+    fullWidth
+    label="Role"
+    value={formData.Role}
+    onChange={(e) => setFormData({ ...formData, Role: e.target.value })}
+    required
+  >
+    <MenuItem value="HR">HR</MenuItem>
+    <MenuItem value="Employee">Employee</MenuItem>
+  </TextField>
+</Grid>
+                            
                             <Grid item xs={12} md={6}>
-                                <TextField
-                                    fullWidth
-                                    label="Role"
-                                    value={formData.Role}
-                                    onChange={(e) => setFormData({ ...formData, Role: e.target.value })}
-                                    required
-                                />
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                                <TextField
-                                    fullWidth
-                                    label="RM"
-                                    value={formData.RM}
-                                    onChange={(e) => setFormData({ ...formData, RM: e.target.value })}
-                                    required
-                                />
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                                <TextField
-                                    fullWidth
-                                    label="Date of Birth (YYYY-MM-DD)"
-                                    value={formData.DOB}
-                                    onChange={(e) => setFormData({ ...formData, DOB: e.target.value })}
-                                />
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                                <TextField
-                                    fullWidth
-                                    label="Date of Joining"
-                                    value={formData.JoinDate}
-                                    onChange={(e) => setFormData({ ...formData, JoinDate: e.target.value })}
-                                />
-                            </Grid>
+  <TextField
+    fullWidth
+    label="Date of Birth"
+    type="date"
+    value={formData.DOB}
+    onChange={(e) => setFormData({ ...formData, DOB: e.target.value })}
+    InputLabelProps={{
+      shrink: true, // Keeps the label above the input when a date is selected
+    }}
+  />
+</Grid>
+<Grid item xs={12} md={6}>
+  <TextField
+    fullWidth
+    label="Date of Joining"
+    type="date"
+    value={formData.JoinDate}
+    onChange={(e) => setFormData({ ...formData, JoinDate: e.target.value })}
+    InputLabelProps={{
+      shrink: true,
+    }}
+  />
+</Grid>
+
                             <Grid item xs={12} md={6}>
                                 <FormControl fullWidth required>
                                     <InputLabel>Shift</InputLabel>
@@ -475,24 +489,7 @@ function EmployeeList() {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12} md={6}>
-                                <TextField
-                                    fullWidth
-                                    label="Latitude/Longitude"
-                                    value={formData.LatLong}
-                                    onChange={(e) => setFormData({ ...formData, LatLong: e.target.value })}
-                                    required
-                                />
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                                <TextField
-                                    fullWidth
-                                    label="Distance"
-                                    value={formData.Distance}
-                                    onChange={(e) => setFormData({ ...formData, Distance: e.target.value })}
-                                    required
-                                />
-                            </Grid>
+                            
                         </Grid>
                         <DialogActions>
                             <Button onClick={handleCloseForm} color="primary">Cancel</Button>

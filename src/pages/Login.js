@@ -160,7 +160,7 @@ function Login() {
                                         <LockOutlinedIcon />
                                     </Avatar>
                                     <Typography variant="h5" align="center" sx={{ color: '#084606', mt: 1 }}>
-                                        PushpRatan Login
+                                        PRG Limited
                                     </Typography>
                                     {error && (
                                         <Typography variant="body2" color="error" align="center">
