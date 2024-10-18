@@ -395,7 +395,7 @@ function EmployeeList() {
                                     required
                                 />
                                   {!formData.Password && (
-            <FormHelperText>This field is required.</FormHelperText>
+            <FormHelperText sx={{color:'red'}}>This field is required.</FormHelperText>
         )}
                             </Grid>
                            <Grid item xs={12} md={6}>
@@ -451,7 +451,7 @@ function EmployeeList() {
     }}
                                 />
                                  {!formData.DOB && (
-            <FormHelperText>This field is required.</FormHelperText>
+            <FormHelperText sx={{color:'red'}}>This field is required.</FormHelperText>
         )}
 </Grid>
 <Grid item xs={12} md={6}>
@@ -466,7 +466,7 @@ function EmployeeList() {
     }}
                                 />
                                  {!formData.JoinDate && (
-            <FormHelperText>This field is required.</FormHelperText>
+            <FormHelperText sx={{color:'red'}}>This field is required.</FormHelperText>
         )}
 </Grid>
 
@@ -501,7 +501,7 @@ function EmployeeList() {
                                         ))}
                                     </Select>
                                      {!formData.OfficeId && (
-            <FormHelperText>This field is required.</FormHelperText>
+            <FormHelperText sx={{color:'red'}}>This field is required.</FormHelperText>
         )}
                                 </FormControl>
                             </Grid>
