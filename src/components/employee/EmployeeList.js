@@ -205,12 +205,15 @@ function EmployeeList() {
         try {
             const response = await axios.post(url, formattedFormData);
             console.log('Response:', response.data); // Log response data
+            alert(response.data)
+            
             if (response.data.success) {
                 handleCloseForm();
                 fetchEmployees();
             } else {
                 console.error('Error:', response.data.message);
             }
+            handleCloseForm()
         } catch (error) {
     console.error('Error:', error.response ? error.response.data : error.message);
     alert(`Error: ${error.response ? error.response.data.message : error.message}`);
@@ -501,7 +504,7 @@ function EmployeeList() {
                         </Grid>
                         <DialogActions>
                             <Button onClick={handleCloseForm} color="primary">Cancel</Button>
-                            <Button onClick={handleCloseForm} type="submit" color="primary">Submit</Button>
+                            <Button  type="submit" color="primary">Submit</Button>
                         </DialogActions>
                     </form>
                 </DialogContent>
