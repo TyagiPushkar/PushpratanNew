@@ -23,6 +23,7 @@ import {
     Select,
     InputLabel,
     FormControl,
+    FormHelperText,
 } from '@mui/material';
 import axios from 'axios';
 import EditIcon from '@mui/icons-material/Edit';
@@ -106,109 +107,113 @@ function EmployeeList() {
         setPage(0);
     };
 
-    const handleOpenForm = (mode, employee = null) => {
-        setFormMode(mode);
-        if (mode === 'edit' && employee) {
-            setFormData({
-                EmpId: employee.EmpId,
-                Name: employee.Name,
-                Password: '', // Assuming Password is not updated on edit
-                Mobile: employee.Mobile,
-                EmailId: employee.EmailId,
-                Role: employee.Role,
-                OTP: employee.OTP,
-                IsOTPExpired: employee.IsOTPExpired || 1,
-                IsGeofence: employee.IsGeofence || 0,
-                Tenent_Id: employee.Tenent_Id || 123, // Default value if not present
-                IsActive: employee.IsActive || 1,
-                OfficeId: employee.OfficeId || null,
-                OfficeName: employee.OfficeName || '',
-                LatLong: employee.LatLong || '',
-                Distance: employee.Distance || '',
-                OfficeIsActive: employee.OfficeIsActive || 1,
-                RM: employee.RM,
-                Shift: employee.Shift
-            });
-        } else {
-            setFormData({
-                EmpId: '',
-                Name: '',
-                Password: '',
-                Mobile: '',
-                EmailId: '',
-                Role: '',
-                OTP: '123456', // Default OTP
-                IsOTPExpired: 1,
-                IsGeofence: 0,
-                Tenent_Id: 123, // Default Tenant ID
-                IsActive: 1,
-                OfficeId: null,
-                OfficeName: '',
-                LatLong: '',
-                Distance: '',
-                OfficeIsActive: 1,
-                RM: '',
-                Shift: ''
-            });
-        }
-        setOpenForm(true);
-    };
+  const handleOpenForm = (mode, employee = null) => {
+    setFormMode(mode);
+    if (mode === 'edit' && employee) {
+        setFormData({
+            EmpId: employee.EmpId,
+            Name: employee.Name,
+            Password: '', // Assuming Password is not updated on edit
+            Mobile: employee.Mobile,
+            EmailId: employee.EmailId,
+            Role: employee.Role,
+            OTP: employee.OTP,
+            IsOTPExpired: employee.IsOTPExpired || 1,
+            IsGeofence: employee.IsGeofence || 0,
+            Tenent_Id: employee.Tenent_Id || 123,
+            IsActive: employee.IsActive || 1,
+            OfficeId: employee.OfficeId || null,
+            OfficeName: employee.OfficeName || '',
+            LatLong: employee.LatLong || '',
+            Distance: employee.Distance || '',
+            OfficeIsActive: employee.OfficeIsActive || 1,
+            RM: employee.RM,
+            Shift: employee.Shift,
+            DOB: employee.DOB || '', // Ensure DOB is included
+            JoinDate: employee.JoinDate || '' // Ensure JoinDate is included
+        });
+    } else {
+        setFormData({
+            // Reset form data for adding a new employee
+            EmpId: '',
+            Name: '',
+            Password: '',
+            Mobile: '',
+            EmailId: '',
+            Role: '',
+            OTP: '123456',
+            IsOTPExpired: 1,
+            IsGeofence: 0,
+            Tenent_Id: 123,
+            IsActive: 1,
+            OfficeId: null,
+            OfficeName: '',
+            LatLong: '',
+            Distance: '',
+            OfficeIsActive: 1,
+            RM: '',
+            Shift: '',
+            DOB: '', // Initialize DOB
+            JoinDate: '' // Initialize JoinDate
+        });
+    }
+    setOpenForm(true);
+};
+
 
     const handleFormSubmit = async (e) => {
-        e.preventDefault();
+    e.preventDefault();
 
-        // Ensure all required fields are populated
-        const requiredFields = ['EmpId', 'Name', 'Password', 'Mobile', 'EmailId', 'Role', 'OfficeName', 'LatLong', 'Distance'];
-        for (let field of requiredFields) {
-            if (!formData[field]) {
-                alert(`Please fill in all required fields. Missing: ${field}`);
-                return;
-            }
+    // Ensure all required fields are populated
+    const requiredFields = ['EmpId', 'Name', 'Mobile', 'EmailId'];
+    for (let field of requiredFields) {
+        if (!formData[field]) {
+            alert(`Please fill in all required fields. Missing: ${field}`);
+            return;
         }
+    }
 
-        const formattedFormData = {
-            EmpId: formData.EmpId,
-            Name: formData.Name,
-            Password: formData.Password,
-            Mobile: formData.Mobile,
-            EmailId: formData.EmailId,
-            Role: formData.Role,
-            OTP: formData.OTP || '123456', // Provide a default OTP if not provided
-            IsOTPExpired: formData.IsOTPExpired || 1,
-            IsGeofence: formData.IsGeofence || 0,
-            Tenent_Id: formData.Tenent_Id || 123,
-            IsActive: formData.IsActive || 1,
-            RM: formData.RM,
-            Shift: formData.Shift,
-            DOB: formData.DOB || '', // Default value if DOB is not provided
-            JoinDate: formData.JoinDate || '', // Default value if JoinDate is not provided
-            Offices: [
-                {
-                    OfficeName: formData.OfficeName,
-                    LatLong: formData.LatLong
-                }
-            ]
-        };
-
-        console.log('Formatted Form Data:', formattedFormData); // Log formatted data
-
-        const url = formMode === 'add'
-            ? 'https://namami-infotech.com/PushpRatan/src/employee/add_employee.php'
-            : 'https://namami-infotech.com/PushpRatan/src/employee/edit_employee.php';
-
-        try {
-            const response = await axios.post(url, formattedFormData);
-            console.log('Response:', response.data); // Log response data
-            if (response.data.success) {
-                handleCloseForm();
-                fetchEmployees();
-            } else {
-                console.error('Error:', response.data.message);
-            }
-        } catch (error) {
-            console.error('Error:', error.response ? error.response.data : error.message);
-        }
+    // Prepare formatted data without the Offices array
+    const formattedFormData = {
+        EmpId: formData.EmpId,
+        Name: formData.Name,
+        Password: formData.Password,
+        Mobile: formData.Mobile,
+        EmailId: formData.EmailId,
+        Role: formData.Role,
+        OTP: formData.OTP || '123456', // Provide a default OTP if not provided
+        IsOTPExpired: formData.IsOTPExpired || 1,
+        IsGeofence: formData.IsGeofence || 0,
+        Tenent_Id: formData.Tenent_Id || 123,
+        IsActive: formData.IsActive || 1,
+        RM: formData.RM,
+        Shift: formData.Shift,
+        DOB: formData.DOB || '', // Default value if DOB is not provided
+        JoinDate: formData.JoinDate || '', // Default value if JoinDate is not provided
+        OfficeId: formData.OfficeId, // Send only the OfficeId
     };
+
+    console.log('Formatted Form Data:', formattedFormData); // Log formatted data
+
+    const url = formMode === 'add'
+        ? 'https://namami-infotech.com/PushpRatan/src/employee/add_employee.php'
+        : 'https://namami-infotech.com/PushpRatan/src/employee/edit_employee.php';
+
+    try {
+        const response = await axios.post(url, formattedFormData);
+        console.log('Response:', response.data); // Log response data
+        if (response.data.success) {
+            handleCloseForm();
+            fetchEmployees();
+        } else {
+            console.error('Error:', response.data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
+        alert(`Error: ${error.response ? error.response.data.message : error.message}`);
+    }
+};
+
 
     const handleOfficeChange = (event) => {
         const selectedOfficeId = event.target.value;
@@ -442,7 +447,10 @@ function EmployeeList() {
     InputLabelProps={{
       shrink: true, // Keeps the label above the input when a date is selected
     }}
-  />
+                                />
+                                 {!formData.DOB && (
+            <FormHelperText>This field is required.</FormHelperText>
+        )}
 </Grid>
 <Grid item xs={12} md={6}>
   <TextField
@@ -454,7 +462,10 @@ function EmployeeList() {
     InputLabelProps={{
       shrink: true,
     }}
-  />
+                                />
+                                 {!formData.JoinDate && (
+            <FormHelperText>This field is required.</FormHelperText>
+        )}
 </Grid>
 
                             <Grid item xs={12} md={6}>
@@ -487,6 +498,9 @@ function EmployeeList() {
                                             </MenuItem>
                                         ))}
                                     </Select>
+                                     {!formData.OfficeId && (
+            <FormHelperText>This field is required.</FormHelperText>
+        )}
                                 </FormControl>
                             </Grid>
                             
