@@ -393,8 +393,10 @@ function EmployeeList() {
                                     value={formData.Password}
                                     onChange={(e) => setFormData({ ...formData, Password: e.target.value })}
                                     required
-                                    disabled={formMode === 'edit'}
                                 />
+                                  {!formData.Password && (
+            <FormHelperText>This field is required.</FormHelperText>
+        )}
                             </Grid>
                            <Grid item xs={12} md={6}>
   <TextField
