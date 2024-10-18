@@ -105,10 +105,11 @@ function DealerList() {
                     <TableHead style={{ backgroundColor: "#084606" }}>
                         <TableRow>
                             <TableCell style={{ color: "white" }}>Dealer ID</TableCell>
-                            <TableCell style={{ color: "white" }}>Dealer Name</TableCell>
+                             <TableCell style={{ color: "white" }}>Company Name</TableCell>
+                            <TableCell style={{ color: "white" }}>Contact Person Name</TableCell>
                             <TableCell style={{ color: "white" }}>Address</TableCell>
                             <TableCell style={{ color: "white" }}>Contact Info</TableCell>
-                            <TableCell style={{ color: "white" }}>Company Name</TableCell>
+                           
                             <TableCell style={{ color: "white" }}>Email</TableCell>
                             <TableCell style={{ color: "white" }}>Added By</TableCell>
                             {/* {user && user.role === 'HR' && <TableCell style={{ color: "white" }}>Actions</TableCell>} */}
@@ -120,10 +121,11 @@ function DealerList() {
                             .map((dealer) => (
                                 <TableRow key={dealer.DealerID}>
                                     <TableCell>{dealer.DealerID}</TableCell>
+                                    <TableCell>{dealer.CompanyName}</TableCell>
                                     <TableCell>{dealer.DealerName}</TableCell>
                                     <TableCell>{dealer.Address}</TableCell>
                                     <TableCell>{dealer.ContactInfo}</TableCell>
-                                    <TableCell>{dealer.CompanyName}</TableCell>
+                                    
                                     <TableCell>{dealer.MailId}</TableCell>
                                     <TableCell>{dealer.AddedByName}</TableCell>
                                     {/* {user && user.role === 'HR' && (

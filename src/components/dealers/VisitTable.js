@@ -191,23 +191,37 @@ useEffect(() => {
                 <Table>
                     <TableHead style={{ backgroundColor: "#084606" }}>
                         <TableRow>
+                            <TableCell style={{ color: "white" }}>Company Name</TableCell>
                             <TableCell style={{ color: "white" }}>Dealer Name</TableCell>
                             <TableCell style={{ color: "white" }}>Visit Time</TableCell>
-                            <TableCell style={{ color: "white" }}>Visit S.No</TableCell>
+                            <TableCell style={{ color: "white" }}>Dealer Mobile</TableCell>
+                            <TableCell style={{ color: "white" }}>Visit</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {visits.filter(visit => {
-                            const visitDate = new Date(visit.VisitTime).toLocaleDateString();
-                            return visitDate === selectedDate.toLocaleDateString();
-                        }).map((visit, index) => (
-                            <TableRow key={`${visit.DealerID}-${index}`}>
-                                <TableCell>{visit.DealerName}</TableCell>
-                                <TableCell>{new Date(visit.VisitTime).toLocaleString()}</TableCell>
-                                <TableCell>{visit.VisitCount}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
+    {visits.filter(visit => {
+        const visitDate = new Date(visit.VisitTime).toLocaleDateString();
+        return visitDate === selectedDate.toLocaleDateString();
+    }).map((visit, index) => (
+        <TableRow key={`${visit.DealerID}-${index}`}>
+            <TableCell>{visit.CompanyName}</TableCell>
+            <TableCell>{visit.DealerName}</TableCell>
+            <TableCell>{new Date(visit.VisitTime).toLocaleString()}</TableCell>
+            <TableCell>{visit.MobileNo}</TableCell>
+            <TableCell>
+                <a
+                    href={`https://www.google.com/maps?q=${visit.VisitLatLong}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: 'blue', textDecoration: 'underline' }}
+                >
+                   View Visit
+                </a>
+            </TableCell>
+        </TableRow>
+    ))}
+</TableBody>
+
                 </Table>
             </TableContainer>
            
