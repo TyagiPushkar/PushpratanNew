@@ -131,9 +131,7 @@ const DashboardData = () => {
                                 <Typography variant="body1">Role: {employeeData?.Role || 'N/A'}</Typography>
                                 <Typography variant="body1">Shift: {employeeData?.Shift || 'N/A'}</Typography>
                             </div>
-                            <div>
-                                <Typography variant="body1">RM: {employeeData?.RM || 'N/A'}</Typography>
-                            </div>
+                            
                         </div>
                     </motion.div>
                 </Grid>
