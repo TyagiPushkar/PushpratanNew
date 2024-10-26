@@ -187,7 +187,7 @@ const AttendanceList = () => {
         if (selectedEmpId) {
             fetchAttendance();
         }
-    });
+    },[selectedEmpId]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
