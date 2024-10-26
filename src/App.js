@@ -19,6 +19,7 @@ import PrivateRoute from './components/auth/PrivateRoute';
 import EmployeeProfile from './pages/EmployeeProfile';
 import Visit from './pages/Dealer';
 import Registration from './pages/Registration';
+import VisitReport from './pages/VisitReport';
 
 function App() {
    useEffect(() => {
@@ -50,7 +51,7 @@ function App() {
             <Route path="/profile" element={<PrivateRoute element={EmpProfile} />} />
             <Route path="/visit" element={<PrivateRoute element={Visit} />} />
             <Route path="/registration" element={<PrivateRoute element={Registration} />} />
-
+            <Route path="/report" element={<PrivateRoute element={VisitReport} />} />
           </Routes>
         </Router>
       </AuthProvider>

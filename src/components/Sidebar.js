@@ -21,7 +21,8 @@ function Sidebar({ mobileOpen, onDrawerToggle }) {
         { path: '/leave', name: 'Leave' },
         { path: '/expense', name: 'Expense' },
         { path: '/visit', name: 'Visit' },
-         { path: '/registration', name: 'Registration' },
+        { path: '/registration', name: 'Registration' },
+         { path: '/report', name: 'Report' },
     ];
 
     // Conditionally include the "Employees" tab based on the user's role

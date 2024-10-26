@@ -324,7 +324,7 @@ function EmployeeList() {
                                     <TableCell component={Link} to={employee.EmpId} style={{ textDecoration: 'none' }}>{employee.Name}</TableCell>
                                     <TableCell component={Link} to={employee.EmpId} style={{ textDecoration: 'none' }}>{employee.Mobile}</TableCell>
                                     <TableCell component={Link} to={employee.EmpId} style={{ textDecoration: 'none' }}>{employee.EmailId}</TableCell>
-                                    <TableCell component={Link} to={employee.EmpId} style={{ textDecoration: 'none' }}>{employee.Role}</TableCell>
+                                    <TableCell component={Link} to={employee.EmpId} style={{ textDecoration: 'none' }}>{employee.Role || 'Employee'}</TableCell>
                                     {/* <TableCell>{employee.RM}</TableCell> */}
                                     <TableCell>{employee.Shift}</TableCell>
                                     <TableCell>

@@ -31,7 +31,7 @@ function DealerList() {
                 });
 
                 if (response.data.success) {
-                    setDealers(response.data.data);
+                    setDealers(response.data.data.reverse());
                 } else {
                     setError(response.data.message);
                 }
@@ -118,6 +118,7 @@ function DealerList() {
                     <TableBody>
                         {dealers
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            
                             .map((dealer) => (
                                 <TableRow key={dealer.DealerID}>
                                     <TableCell>{dealer.DealerID}</TableCell>

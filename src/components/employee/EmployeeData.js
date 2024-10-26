@@ -112,7 +112,7 @@ const EmployeeData = ({ EmpId }) => {
                         >
                             <Avatar
                                 sx={{ width: 100, height: 100 }}
-                                src={employeeData?.profilePicture || 'https://via.placeholder.com/120'}
+                                src={employeeData?.Name}
                                 alt={employeeData?.name || 'Employee Profile Picture'}
                                 style={{ boxShadow: '0px 4px 20px rgba(0,0,0,0.1)' }}
                             />
@@ -126,7 +126,7 @@ const EmployeeData = ({ EmpId }) => {
                             transition={{ duration: 0.5 }}
                         >
                             <Typography variant="h5" gutterBottom style={{ color: "#084606" }}>
-                                {employeeData?.Name || 'N/A'} Information
+                                {employeeData?.Name || 'N/A'}'s Information
                             </Typography>
                             <Divider sx={{ marginY: 2 }} />
                             <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -137,7 +137,7 @@ const EmployeeData = ({ EmpId }) => {
                                 </div>
                                 <div>
                                     <Typography variant="body1">Name: {employeeData?.Name || 'N/A'}</Typography>
-                                    <Typography variant="body1">Role: {employeeData?.Role || 'N/A'}</Typography>
+                                    <Typography variant="body1">Role: {employeeData?.Designation || 'Employee'}</Typography>
                                     <Typography variant="body1">Shift: {employeeData?.Shift || 'N/A'}</Typography>
                                 </div>
                                 
@@ -159,9 +159,6 @@ const EmployeeData = ({ EmpId }) => {
                     <Tab label="Leave" />
                     <Tab label="Expense" />
                     <Tab label="Attendance" />
-                    {/* <Tab label="Salary" />
-                    <Tab label="Assets" /> */}
-
                 </Tabs>
 
                 {/* Tab Panels */}
@@ -213,16 +210,13 @@ const EmployeeData = ({ EmpId }) => {
                         </List>
                     </motion.div>
                 )}
-
                 {activeTab === 2 && (
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.3 }}
                     >
-
                         <Typography variant="body1">Total Working Hours This Week: {totalWorkingHours.toFixed(2)} hours</Typography>
-
                         <Divider sx={{ marginY: 2 }} />
 
                         <Table>

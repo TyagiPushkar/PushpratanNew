@@ -103,7 +103,7 @@ const DashboardData = () => {
                     >
                         <Avatar
                             sx={{ width: 100, height: 100 }}
-                            src={employeeData?.profilePicture || 'https://via.placeholder.com/120'}
+                            src={employeeData.EmailId }
                             alt={employeeData?.name || 'Employee Profile Picture'}
                             style={{ boxShadow: '0px 4px 20px rgba(0,0,0,0.1)' }}
                         />
@@ -117,7 +117,7 @@ const DashboardData = () => {
                         transition={{ duration: 0.5 }}
                     >
                         <Typography variant="h5" gutterBottom style={{ color: "#084606" }}>
-                            {employeeData?.Name || 'N/A'} Dashboard
+                            {employeeData?.Name || 'N/A'}'s Dashboard
                         </Typography>
                         <Divider sx={{ marginY: 2 }} />
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -128,7 +128,7 @@ const DashboardData = () => {
                             </div>
                             <div>
                                 <Typography variant="body1">Name: {employeeData?.Name || 'N/A'}</Typography>
-                                <Typography variant="body1">Role: {employeeData?.Role || 'N/A'}</Typography>
+                                <Typography variant="body1">Role: {employeeData?.Designation || 'Employee'}</Typography>
                                 <Typography variant="body1">Shift: {employeeData?.Shift || 'N/A'}</Typography>
                             </div>
                             
