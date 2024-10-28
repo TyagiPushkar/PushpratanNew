@@ -136,7 +136,7 @@ const VisitList = () => {
                                
                                 <TableCell style={{ color: 'white' }}>Destination </TableCell>
                                
-                                <TableCell style={{ color: 'white' }}>Distance (meters)</TableCell>
+                                <TableCell style={{ color: 'white' }}>Distance (km)</TableCell>
                                 <TableCell style={{ color: 'white' }}>Visit Date</TableCell>
                             </TableRow>
                         </TableHead>
@@ -162,7 +162,7 @@ const VisitList = () => {
                                             {visit.DestinationTime}
                                         </a>
                                     </TableCell>
-                                    <TableCell>{visit.Distance}</TableCell>
+                                    <TableCell>{visit.Distance} kms</TableCell>
                                     <TableCell>{new Date(visit.VisitDateTime).toLocaleDateString()}</TableCell>
                                 </TableRow>
                             ))}
