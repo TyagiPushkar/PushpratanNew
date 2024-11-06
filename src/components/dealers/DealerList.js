@@ -91,7 +91,7 @@ function DealerList() {
 
     return (
         <Box>
-            <br />
+           
             <Button
                 variant="contained"
                 color="primary"
@@ -104,49 +104,36 @@ function DealerList() {
                 <Table>
                     <TableHead style={{ backgroundColor: "#084606" }}>
                         <TableRow>
-                            <TableCell style={{ color: "white" }}>Dealer ID</TableCell>
-                             <TableCell style={{ color: "white" }}>Company Name</TableCell>
-                            <TableCell style={{ color: "white" }}>Contact Person Name</TableCell>
+                            <TableCell style={{ color: "white" }}>ID</TableCell>
+                            <TableCell style={{ color: "white" }}>Employee</TableCell>
+                            <TableCell style={{ color: "white" }}>Company Name</TableCell>
+                            <TableCell style={{ color: "white" }}> Name</TableCell>
                             <TableCell style={{ color: "white" }}>Address</TableCell>
                             <TableCell style={{ color: "white" }}>Contact Info</TableCell>
                            
                             <TableCell style={{ color: "white" }}>Email</TableCell>
-                            <TableCell style={{ color: "white" }}>Added By</TableCell>
+                             <TableCell style={{ color: "white" }}>Date</TableCell>
+                          
                             {/* {user && user.role === 'HR' && <TableCell style={{ color: "white" }}>Actions</TableCell>} */}
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {dealers
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            
                             .map((dealer) => (
                                 <TableRow key={dealer.DealerID}>
                                     <TableCell>{dealer.DealerID}</TableCell>
+                                    <TableCell>{dealer.AddedByName}</TableCell>
                                     <TableCell>{dealer.CompanyName}</TableCell>
                                     <TableCell>{dealer.DealerName}</TableCell>
                                     <TableCell>{dealer.Address}</TableCell>
                                     <TableCell>{dealer.ContactInfo}</TableCell>
-                                    
                                     <TableCell>{dealer.MailId}</TableCell>
-                                    <TableCell>{dealer.AddedByName}</TableCell>
-                                    {/* {user && user.role === 'HR' && (
-                                        <TableCell>
-                                            <IconButton
-                                                variant="contained"
-                                                color="success"
-                                                onClick={() => console.log('Approve action for', dealer.DealerID)}
-                                            >
-                                                <CheckIcon />
-                                            </IconButton>
-                                            <IconButton
-                                                variant="contained"
-                                                color="error"
-                                                onClick={() => console.log('Reject action for', dealer.DealerID)}
-                                            >
-                                                <CancelIcon />
-                                            </IconButton>
-                                        </TableCell>
-                                    )} */}
+                                    <TableCell>
+                                   {new Date(dealer.datetime).toLocaleDateString('en-GB').replace(/\//g, '-')}
+                                       </TableCell>
+
+                                    
                                 </TableRow>
                             ))}
                     </TableBody>

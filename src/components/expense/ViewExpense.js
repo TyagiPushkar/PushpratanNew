@@ -155,7 +155,7 @@ function ViewExpense() {
                 <Table>
                     <TableHead style={{ backgroundColor: "#084606" }}>
                         <TableRow>
-                            <TableCell style={{ color: "white" }}>Employee Id</TableCell>
+                            <TableCell style={{ color: "white" }}>EmpId</TableCell>
                             <TableCell style={{ color: "white" }}>Expense Date</TableCell>
                             <TableCell style={{ color: "white" }}>Expense Type</TableCell>
                             <TableCell style={{ color: "white" }}>Expense Amount</TableCell>

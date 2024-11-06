@@ -16,7 +16,7 @@ function Employee() {
             </Box>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <Navbar />
-                <Box sx={{ mt: 4 }}>
+                <Box sx={{ mt: 1 }}>
                     <EmployeeList />
                 </Box>
             </Box>

@@ -43,11 +43,11 @@ function Sidebar({ mobileOpen, onDrawerToggle }) {
         >
             {/* Fixed logo area */}
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
-                <img src={HRSmileLogo} alt="HRMS Logo" style={{ width: '250px', marginBottom: '20px' }} />
+                <img src={HRSmileLogo} alt="HRMS Logo" style={{ width: '250px' }} />
             </Box>
 
             {/* Scrollable list area without visible scrollbar */}
-            <Box sx={{ overflowX: 'auto', flex: 1, '&::-webkit-scrollbar': { display: 'none' },marginTop:'80px' }}>
+            <Box sx={{ overflowX: 'auto', flex: 1, '&::-webkit-scrollbar': { display: 'none' },marginTop:'0px' }}>
                 <List>
                     {routes.map((route, index) => (
                         <ListItem

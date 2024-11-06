@@ -46,7 +46,6 @@ function VisitTable() {
                 console.error('Error fetching visits:', err);
             }
         };
-
         fetchVisits();
     }, [selectedEmpId]);
 
@@ -117,7 +116,6 @@ function VisitTable() {
         );
     }
 }, [markers]);
-
 
     const handleDateChange = (event) => {
         setSelectedDate(new Date(event.target.value));
@@ -192,11 +190,10 @@ useEffect(() => {
                     <TableHead style={{ backgroundColor: "#084606" }}>
                         <TableRow>
                             <TableCell style={{ color: "white" }}>Company Name</TableCell>
-                            <TableCell style={{ color: "white" }}>Dealer Name</TableCell>
+                            <TableCell style={{ color: "white" }}> Name</TableCell>
+                            <TableCell style={{ color: "white" }}> Mobile</TableCell>
                             <TableCell style={{ color: "white" }}>Visit Time</TableCell>
-                            <TableCell style={{ color: "white" }}>Dealer Mobile</TableCell>
-                            <TableCell style={{ color: "white" }}>Visit</TableCell>
-                        </TableRow>
+                                                    </TableRow>
                     </TableHead>
                     <TableBody>
     {visits.filter(visit => {
@@ -204,20 +201,22 @@ useEffect(() => {
         return visitDate === selectedDate.toLocaleDateString();
     }).map((visit, index) => (
         <TableRow key={`${visit.DealerID}-${index}`}>
-            <TableCell>{visit.CompanyName}</TableCell>
-            <TableCell>{visit.DealerName}</TableCell>
-            <TableCell>{new Date(visit.VisitTime).toLocaleString()}</TableCell>
-            <TableCell>{visit.MobileNo}</TableCell>
-            <TableCell>
+             <TableCell>
                 <a
                     href={`https://www.google.com/maps?q=${visit.VisitLatLong}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ color: 'blue', textDecoration: 'underline' }}
                 >
-                   View Visit
+                   {visit.CompanyName}
                 </a>
             </TableCell>
+           
+            <TableCell>{visit.DealerName}</TableCell>
+             <TableCell>{visit.MobileNo}</TableCell>
+            <TableCell>{new Date(visit.VisitTime).toLocaleString()}</TableCell>
+           
+           
         </TableRow>
     ))}
 </TableBody>
