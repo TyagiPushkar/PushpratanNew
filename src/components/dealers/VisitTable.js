@@ -150,9 +150,10 @@ useEffect(() => {
                         value={selectedEmpId}
                         onChange={(e) => setSelectedEmpId(e.target.value)}
                         label="Select Employee"
+                        size='small'
                     >
                         {employees.map(employee => (
-                            <MenuItem key={employee.EmpId} value={employee.EmpId}>
+                            <MenuItem size='small' key={employee.EmpId} value={employee.EmpId}>
                                 {employee.Name} ({employee.EmpId})
                             </MenuItem>
                         ))}
@@ -165,12 +166,14 @@ useEffect(() => {
                 value={selectedDate.toISOString().substr(0, 10)}
                 onChange={handleDateChange}
                 variant="outlined"
+                size='small'
             />
              <br />
             <Button
                 variant="contained"
                 style={{ backgroundColor: "#084606", color: "white" }}
                 onClick={() => setShowMap(!showMap)}
+                size='small'
             >
                 {showMap ? 'Hide Map' : 'Show Map'}
             </Button>
@@ -186,7 +189,7 @@ useEffect(() => {
                 />
             )}
             <TableContainer component={Paper}>
-                <Table>
+                <Table size='small'>
                     <TableHead style={{ backgroundColor: "#084606" }}>
                         <TableRow>
                             <TableCell style={{ color: "white" }}>Company Name</TableCell>

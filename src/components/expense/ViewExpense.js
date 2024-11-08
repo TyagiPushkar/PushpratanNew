@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, TableFooter, TablePagination, Button, IconButton } from '@mui/material';
 import axios from 'axios';
 import CheckIcon from '@mui/icons-material/Check';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
 import CancelIcon from '@mui/icons-material/Cancel';
-
+import ImageIcon from '@mui/icons-material/Image';
 import { useAuth } from '../auth/AuthContext';
 
 function ViewExpense() {
@@ -145,6 +146,7 @@ function ViewExpense() {
             <br />
             <Button
                 variant="contained"
+                size="small"
                 color="primary"
                 onClick={exportToCsv}
                 style={{ marginBottom: '16px', backgroundColor: "#084606", float: "right" }}
@@ -152,7 +154,7 @@ function ViewExpense() {
                 Export CSV
             </Button>
             <TableContainer component={Paper}>
-                <Table>
+                <Table size="small">
                     <TableHead style={{ backgroundColor: "#084606" }}>
                         <TableRow>
                             <TableCell style={{ color: "white" }}>EmpId</TableCell>
@@ -160,7 +162,7 @@ function ViewExpense() {
                             <TableCell style={{ color: "white" }}>Expense Type</TableCell>
                             <TableCell style={{ color: "white" }}>Expense Amount</TableCell>
                             <TableCell style={{ color: "white" }}>Bill</TableCell>
-                            <TableCell style={{ color: "white" }}>Status</TableCell>
+                            <TableCell style={{ color: "white" }}></TableCell>
                             {user && user.role === 'HR' && <TableCell style={{ color: "white" }}>Actions</TableCell>}
                         </TableRow>
                     </TableHead>
@@ -175,18 +177,13 @@ function ViewExpense() {
                                     <TableCell>{expense.expenseAmount}</TableCell>
                                     <TableCell>
                                         {expense.image ? (
-                                            <Button
-                                                variant="contained"
-                                                style={{backgroundColor:"#084606"}}
-                                                onClick={() => handleViewImage(expense.image)}
-                                            >
-                                                View
-                                            </Button>
+                                            <ImageIcon  onClick={() => handleViewImage(expense.image)} sx={{cursor:"pointer"}}/>
+                                            
                                         ) : (
                                             'No Image'
                                         )}
                                     </TableCell>
-                                    <TableCell>{expense.Status}</TableCell>
+                                    <TableCell ><FiberManualRecordIcon color={expense.status=="Approved" ? "success" : "error"}/></TableCell>
                                     {user && user.role === 'HR' && (
                                         <TableCell>
                                             <IconButton

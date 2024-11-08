@@ -128,12 +128,13 @@ function ViewLeave() {
                 variant="contained"
                 color="primary"
                 onClick={exportToCsv}
+                size="small"
                 style={{ marginBottom: '16px', backgroundColor: "#084606", float: "right" }}
             >
                 Export CSV
             </Button>
             <TableContainer component={Paper} style={{ overflowX: 'auto' }}>
-                <Table>
+                <Table size="small">
                     <TableHead style={{ backgroundColor: "#084606" }}>
                         <TableRow>
                             <TableCell style={{ color: "white" }}>Employee Id</TableCell>
@@ -178,6 +179,7 @@ function ViewLeave() {
                     <TableFooter>
                         <TableRow>
                             <TablePagination
+                                
                                 rowsPerPageOptions={[5, 10, 25]}
                                 count={leaves.length}
                                 rowsPerPage={rowsPerPage}

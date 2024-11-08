@@ -63,19 +63,27 @@ function ViewHoliday() {
                         onClick={() => setDialogOpen(true)}
                         sx={{ mb: 2 }}
                         style={{ backgroundColor: "#084606" }}
+                        size='small'
                     >
                         Add Holiday
                     </Button> : null}
 
                 {/* Month and Year Picker */}
-                <LocalizationProvider dateAdapter={AdapterLuxon}>
-                    <DatePicker
-                        views={['year', 'month']}
-                        value={selectedDate}
-                        onChange={handleMonthYearChange}
-                        renderInput={(params) => <TextField {...params} label="Select Month and Year" />}
-                    />
-                </LocalizationProvider>
+               <LocalizationProvider dateAdapter={AdapterLuxon}>
+    <DatePicker
+        views={['year', 'month']}
+        value={selectedDate}
+        onChange={handleMonthYearChange}
+        renderInput={(params) => (
+            <TextField
+                {...params}
+                label="Select Month and Year"
+                size="small" // Makes the DatePicker input smaller
+            />
+        )}
+    />
+</LocalizationProvider>
+
             </div>
             <br />
 
@@ -85,11 +93,11 @@ function ViewHoliday() {
                     events={holidays}
                     startAccessor="start"
                     endAccessor="end"
-                    style={{ height: 600, width: '100%', margin: '0 auto' }}
+                    style={{ height: 350, width: '100%', margin: '0 auto' }}
                     views={['month', 'agenda', 'day']}
                     date={selectedDate.toJSDate()}
                     onNavigate={(date) => setSelectedDate(DateTime.fromJSDate(date))}  // Handle navigation in the calendar
-                    selectable={false}  // Disable day clicking
+                    selectable={false}  
                 />
             </div>
 
@@ -105,7 +113,7 @@ function ViewHoliday() {
                     box-sizing: border-box;
                 }
                 .calendar-wrapper {
-                    width: 100%;
+                    width: 80%;
                     margin: 0 auto;
                     border-radius: 10px;
                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

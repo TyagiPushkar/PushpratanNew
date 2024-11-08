@@ -33,12 +33,12 @@ function ViewNotifications() {
 
     return (
         <div>
-            {user && user.role === "HR" ? <Button variant="contained" color="primary" onClick={handleOpenDialog} sx={{ mb: 2 }} style={{ backgroundColor: "#084606" }}>
+            {user && user.role === "HR" ? <Button size="small" variant="contained" color="primary" onClick={handleOpenDialog} sx={{ mb: 2 }} style={{ backgroundColor: "#084606" }}>
                 Add Notification
             </Button> : null}
 
             <TableContainer component={Paper}>
-                <Table>
+                <Table size="small">
                     <TableHead style={{ backgroundColor: "#084606" }}>
                         <TableRow>
                             <TableCell style={{ color: "white" }}>Subject</TableCell>

@@ -1,11 +1,15 @@
 import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { Drawer, List, ListItem, ListItemText, Box, Slide } from '@mui/material';
-import HRSmileLogo from '../assets/HRSmileLogo.png';
+import { Drawer, List, ListItem, ListItemText, Box, Slide, Divider, ListItemIcon } from '@mui/material';
+import { Dashboard, HolidayVillage, Policy, Notifications, Person, BarChart } from '@mui/icons-material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { useAuth } from './auth/AuthContext';
-
+import HRSmileLogo from '../assets/HRSmileLogo.png';
+import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+import SummarizeIcon from '@mui/icons-material/Summarize';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 function Sidebar({ mobileOpen, onDrawerToggle }) {
     const location = useLocation();
     const theme = useTheme();
@@ -13,41 +17,42 @@ function Sidebar({ mobileOpen, onDrawerToggle }) {
     const { user } = useAuth();
 
     const routes = [
-        { path: '/dashboard', name: 'Dashboard' },
-        { path: '/holiday', name: 'Holiday' },
-        { path: '/policy', name: 'Policy' },
-        { path: '/attendance', name: 'Attendance' },
-        { path: '/notification', name: 'Notification' },
-        { path: '/leave', name: 'Leave' },
-        { path: '/expense', name: 'Expense' },
-        { path: '/visit', name: 'Visit' },
-        { path: '/registration', name: 'Registration' },
-         { path: '/report', name: 'Report' },
+        { path: '/dashboard', name: 'Dashboard', icon: <Dashboard /> },
+        { path: '/holiday', name: 'Holiday', icon: <HolidayVillage /> },
+        { path: '/policy', name: 'Policy', icon: <Policy /> },
+        { path: '/attendance', name: 'Attendance', icon: <BarChart /> },
+        { path: '/notification', name: 'Notification', icon: <Notifications /> },
+        { path: '/leave', name: 'Leave', icon: <Person /> },
+        { path: '/expense', name: 'Expense', icon: <AccountBalanceWalletIcon /> },
+        { path: '/visit', name: 'Visit', icon: <AddLocationAltIcon /> },
+        { path: '/registration', name: 'Registration', icon: <HowToRegIcon /> },
+        { path: '/report', name: 'Report', icon: <SummarizeIcon /> },
     ];
 
     // Conditionally include the "Employees" tab based on the user's role
     if (user && user.role === 'HR') {
-        routes.splice(1, 0, { path: '/employees', name: 'Employees' });
+        routes.splice(1, 0, { path: '/employees', name: 'Employees', icon: <Person /> });
     }
 
     const drawer = (
         <Box
             sx={{
-                width: 240,
+                width: 230,
                 display: 'flex',
                 flexDirection: 'column',
                 height: '100vh',
-                bgcolor: '#084606',
+                bgcolor: '#084606', // Green background color
                 overflow: 'hidden',
+                boxShadow: 3,
             }}
         >
-            {/* Fixed logo area */}
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
-                <img src={HRSmileLogo} alt="HRMS Logo" style={{ width: '250px' }} />
+            {/* Logo */}
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', p: 2 }}>
+                <img src={HRSmileLogo} alt="HRMS Logo" style={{ width: '180px' }} />
             </Box>
 
-            {/* Scrollable list area without visible scrollbar */}
-            <Box sx={{ overflowX: 'auto', flex: 1, '&::-webkit-scrollbar': { display: 'none' },marginTop:'0px' }}>
+            {/* List */}
+            <Box sx={{ overflowY: 'auto', flex: 1, p: 1, '&::-webkit-scrollbar': { display: 'none' } }}>
                 <List>
                     {routes.map((route, index) => (
                         <ListItem
@@ -55,9 +60,10 @@ function Sidebar({ mobileOpen, onDrawerToggle }) {
                             key={index}
                             component={Link}
                             to={route.path}
-                            sx={{
+                            selected={location.pathname === route.path}
+                           sx={{
                                 backgroundColor: location.pathname === route.path ? 'white' : 'transparent',
-                                color: location.pathname === route.path ? '#084606' : 'white',
+                                color: location.pathname === route.path ? '#6CF851' : 'white',
                                 '&:hover': {
                                     backgroundColor: '#6CF851',
                                     color: 'white',
@@ -67,11 +73,13 @@ function Sidebar({ mobileOpen, onDrawerToggle }) {
                             }}
                             onClick={isMobile ? onDrawerToggle : null}
                         >
+                            <ListItemIcon sx={{ color: 'inherit', minWidth: 40 }}>{route.icon}</ListItemIcon>
                             <ListItemText primary={route.name} />
                         </ListItem>
                     ))}
                 </List>
             </Box>
+            <Divider />
         </Box>
     );
 
@@ -87,11 +95,9 @@ function Sidebar({ mobileOpen, onDrawerToggle }) {
                     }}
                     sx={{
                         '& .MuiDrawer-paper': {
-                            boxSizing: 'border-box',
-                            width: 240,
-                            zIndex: theme.zIndex.appBar + 1,
-                            backgroundColor: '#084606',
-                            overflowY: 'hidden',
+                            width: 230,
+                            bgcolor: '#084606', // Green background color
+                            boxShadow: 3,
                         },
                     }}
                 >
@@ -103,10 +109,9 @@ function Sidebar({ mobileOpen, onDrawerToggle }) {
                 sx={{
                     display: { xs: 'none', sm: 'block' },
                     '& .MuiDrawer-paper': {
-                        boxSizing: 'border-box',
-                        width: 240,
-                        backgroundColor: '#084606',
-                        overflowY: 'hidden',
+                        width: 230,
+                        bgcolor: '#084606', // Green background color
+                        boxShadow: 3,
                     },
                 }}
                 open

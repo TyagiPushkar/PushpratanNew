@@ -29,6 +29,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 function EmployeeList() {
     const [employees, setEmployees] = useState([]);
     const [offices, setOffices] = useState([]);
@@ -276,19 +277,21 @@ function EmployeeList() {
     return (
         <div>
             <Grid container spacing={2} alignItems="center">
-                <Grid item xs={12} md={8}>
+                <Grid item xs={12} md={6}>
                     <TextField
                         fullWidth
                         variant="outlined"
                         placeholder="Search Employee"
-                        margin="normal"
+                        margin="dense"
+                        size="small" // Smaller size
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </Grid>
-                <Grid item xs={12} md={4} sx={{ textAlign: 'right' }}>
+                <Grid item xs={12} md={6} sx={{ textAlign: 'right' }}>
                     <Button
                         variant="contained"
                         color="primary"
+                        size="small" // Smaller button
                         style={{ backgroundColor: "#084606" }}
                         startIcon={<AddIcon />}
                         onClick={() => handleOpenForm('add')}
@@ -297,62 +300,48 @@ function EmployeeList() {
                     </Button>
                 </Grid>
             </Grid>
-            <Box sx={{ overflowX: 'auto', mt: 2 }}>
+            <Box sx={{ overflowX: 'auto', mt: 0 }}>
                 <TableContainer component={Paper}>
-                    <Table>
+                    <Table size="small"> {/* Small table size for compact look */}
                         <TableHead style={{ backgroundColor: "#084606" }}>
                             <TableRow>
+                                <TableCell style={{ color: "white" }}></TableCell>
                                 <TableCell style={{ color: "white" }}>EmpID</TableCell>
                                 <TableCell style={{ color: "white" }}>Name</TableCell>
                                 <TableCell style={{ color: "white" }}>Mobile</TableCell>
                                 <TableCell style={{ color: "white" }}>Email</TableCell>
                                 <TableCell style={{ color: "white" }}>Role</TableCell>
-                                {/* <TableCell style={{ color: "white" }}>RM</TableCell> */}
-                                <TableCell style={{ color: "white" }}>Shift</TableCell>
-                                <TableCell style={{ color: "white" }}>Status</TableCell>
                                 <TableCell style={{ color: "white" }}>Actions</TableCell>
-
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {filteredEmployees.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(employee => (
-
                                 <TableRow key={employee.EmpId}>
-
-                                    <TableCell component={Link} to={employee.EmpId} style={{ textDecoration: 'none' }}>{employee.EmpId}</TableCell>
-
-                                    <TableCell component={Link} to={employee.EmpId} style={{ textDecoration: 'none' }}>{employee.Name}</TableCell>
-                                    <TableCell component={Link} to={employee.EmpId} style={{ textDecoration: 'none' }}>{employee.Mobile}</TableCell>
-                                    <TableCell component={Link} to={employee.EmpId} style={{ textDecoration: 'none' }}>{employee.EmailId}</TableCell>
-                                    <TableCell component={Link} to={employee.EmpId} style={{ textDecoration: 'none' }}>{employee.Role || 'Employee'}</TableCell>
-                                    {/* <TableCell>{employee.RM}</TableCell> */}
-                                    <TableCell>{employee.Shift}</TableCell>
                                     <TableCell>
-                                        <Typography
-                                            variant="body2"
-                                            color={employee.IsActive ? "green" : "red"}
-                                        >
-                                            {employee.IsActive ? 'Active' : 'Inactive'}
-                                        </Typography>
+                                        <FiberManualRecordIcon fontSize="small" color={employee.IsActive ? "success" : "error"} />
                                     </TableCell>
-                                    <TableCell style={{display:"flex"}}>
+                                    <TableCell component={Link} to={employee.EmpId} style={{ textDecoration: 'none', fontSize: '0.875rem' }}>{employee.EmpId}</TableCell>
+                                    <TableCell component={Link} to={employee.EmpId} style={{ textDecoration: 'none', fontSize: '0.875rem' }}>{employee.Name}</TableCell>
+                                    <TableCell component={Link} to={employee.EmpId} style={{ textDecoration: 'none', fontSize: '0.875rem' }}>{employee.Mobile}</TableCell>
+                                    <TableCell component={Link} to={employee.EmpId} style={{ textDecoration: 'none', fontSize: '0.875rem' }}>{employee.EmailId}</TableCell>
+                                    <TableCell component={Link} to={employee.EmpId} style={{ textDecoration: 'none', fontSize: '0.875rem' }}>{employee.Role || 'Employee'}</TableCell>
+                                    <TableCell style={{ display: "flex" }}>
                                         <IconButton
                                             color="primary"
+                                            size="small" // Smaller icon button
                                             onClick={() => handleOpenForm('edit', employee)}
                                         >
-                                            <EditIcon />
+                                            <EditIcon fontSize="small" />
                                         </IconButton>
-                                       <IconButton
-            color={employee.IsActive ? 'error' : 'success'}
-            onClick={() => handleToggleEmployeeStatus(employee)}
-        >
-            {employee.IsActive ? <CloseIcon /> : <CheckCircleIcon />}
-        </IconButton>
-                                       
-                                       
+                                        <IconButton
+                                            color={employee.IsActive ? 'error' : 'success'}
+                                            size="small" // Smaller icon button
+                                            onClick={() => handleToggleEmployeeStatus(employee)}
+                                        >
+                                            {employee.IsActive ? <CloseIcon fontSize="small" /> : <CheckCircleIcon fontSize="small" />}
+                                        </IconButton>
                                     </TableCell>
                                 </TableRow>
-
                             ))}
                         </TableBody>
                     </Table>

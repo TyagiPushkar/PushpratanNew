@@ -3,6 +3,9 @@ import axios from 'axios';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, TablePagination } from '@mui/material';
 import AddPolicyDialog from './AddPolicy';
 import { useAuth } from '../auth/AuthContext';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import DoneIcon from '@mui/icons-material/Done';
+import CloseIcon from '@mui/icons-material/Close';
 
 function PolicyList() {
     const { user } = useAuth();
@@ -81,12 +84,12 @@ function PolicyList() {
 
     return (
         <div>
-            {user && user.role === 'HR' ? <Button variant="contained" color="primary" onClick={handleOpenDialog} sx={{ mb: 2 }} style={{ backgroundColor: "#084606" }}>
+            {user && user.role === 'HR' ? <Button size="small" variant="contained" color="primary" onClick={handleOpenDialog} sx={{ mb: 2 }} style={{ backgroundColor: "#084606" }}>
                 Add Policy
             </Button> : null}
 
             <TableContainer component={Paper}>
-                <Table>
+                <Table size="small">
                     <TableHead style={{ backgroundColor: "#084606" }}>
                         <TableRow>
                             <TableCell style={{ color: "white" }}>Policy Name</TableCell>
@@ -122,32 +125,17 @@ function PolicyList() {
                                         </a>
                                     </TableCell> */}
                                     <TableCell>
-                                        <Button
-                                            variant="contained"
-                                            style={{backgroundColor:"#084606"}}
-                                            onClick={() => handleViewPDF(policy.PolicyPDF)}
-                                        >
-                                            View PDF
-                                        </Button>
+                                        <PictureAsPdfIcon  style={{color:"#084606", cursor:'pointer'}} onClick={() => handleViewPDF(policy.PolicyPDF)}/>
+                                      
                                     </TableCell>
                                     {user && user.role === 'HR' && (
                                         <TableCell>
                                             {policy.IsActive ? (
-                                                <Button
-                                                    variant="contained"
-                                                    color="secondary"
-                                                    onClick={() => handleTogglePolicyStatus(policy.Id, 'disable')}
-                                                >
-                                                    Disable
-                                                </Button>
+
+                                                <CloseIcon sx={{cursor:'pointer',color:"red"}}  onClick={() => handleTogglePolicyStatus(policy.Id, 'disable')}/>
+                                                
                                             ) : (
-                                                <Button
-                                                    variant="contained"
-                                                    color="primary"
-                                                    onClick={() => handleTogglePolicyStatus(policy.Id, 'enable')}
-                                                >
-                                                    Enable
-                                                </Button>
+                                                    <DoneIcon sx={{cursor:'pointer',color:"green"}} onClick={() => handleTogglePolicyStatus(policy.Id, 'enable')}/>
                                             )}
                                         </TableCell>
                                     )}

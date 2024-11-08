@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
     CircularProgress,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
     Typography,
     Table,
     TableBody,
@@ -15,24 +11,24 @@ import {
     Paper,
     Box,
     TextField,
+    Button,
 } from '@mui/material';
 import axios from 'axios';
-
+import { saveAs } from 'file-saver';
+import GetAppIcon from '@mui/icons-material/GetApp';
+import AttendanceReport from './AttendanceReport';
 const VisitList = () => {
     const [employees, setEmployees] = useState([]);
-    const [selectedEmpId, setSelectedEmpId] = useState('');
     const [visits, setVisits] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [selectedDate, setSelectedDate] = useState('');
+    const [fromDate, setFromDate] = useState('');
+    const [toDate, setToDate] = useState('');
 
     useEffect(() => {
-        // Fetch employee list on component mount
         const fetchEmployees = async () => {
             try {
-                const response = await axios.get(
-                    'https://namami-infotech.com/PushpRatan/src/employee/list_employee.php'
-                );
+                const response = await axios.get('https://namami-infotech.com/PushpRatan/src/employee/list_employee.php');
                 if (response.data.success) {
                     setEmployees(response.data.data);
                 }
@@ -45,134 +41,133 @@ const VisitList = () => {
     }, []);
 
     useEffect(() => {
-        // Fetch visits only if an employee is selected
-        if (selectedEmpId) {
-            const fetchVisits = async () => {
-                setLoading(true);
-                setError('');
-                try {
-                    const response = await axios.get(
-                        `https://namami-infotech.com/PushpRatan/src/visit/get_visits_entry.php?EmpId=${selectedEmpId}`
-                    );
-                    if (response.data.success) {
-                        // Filter visits by the selected date
-                        const filteredVisits = selectedDate
-                            ? response.data.data.filter((visit) => 
-                                new Date(visit.VisitDateTime).toLocaleDateString() === new Date(selectedDate).toLocaleDateString()
-                              )
-                            : response.data.data;
+        const fetchVisits = async () => {
+            if (!fromDate || !toDate) return;
 
-                        setVisits(filteredVisits);
-                    } else {
-                        setVisits([]);
-                        setError(`No visits found for employee ${selectedEmpId}.`);
-                    }
-                } catch (error) {
-                    setError('Error fetching visit history.');
+            setLoading(true);
+            setError('');
+            try {
+                const response = await axios.get(
+                    `https://namami-infotech.com/PushpRatan/src/visit/get_visits_entry.php?role=HR`
+                );
+                if (response.data.success) {
+                    const filteredVisits = response.data.data.filter((visit) => {
+                        const visitDate = new Date(visit.VisitDateTime);
+                        return visitDate >= new Date(fromDate) && visitDate <= new Date(toDate);
+                    });
+                    setVisits(filteredVisits);
+                } else {
                     setVisits([]);
-                } finally {
-                    setLoading(false);
+                    setError('No visits found.');
                 }
+            } catch (error) {
+                setError('Error fetching visit history.');
+                setVisits([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchVisits();
+    }, [fromDate, toDate]);
+
+    const handleDateChange = (event, type) => {
+        type === "from" ? setFromDate(event.target.value) : setToDate(event.target.value);
+    };
+
+    const exportSummaryToCSV = () => {
+        const summaryData = employees.map((employee) => {
+            const dealerVisits = visits.filter((visit) => visit.EmpId === employee.EmpId && visit.SourceEvent !== 'In' && visit.SourceEvent !== 'Out');
+            const totalDistance = dealerVisits.reduce((total, visit) => total + parseFloat(visit.Distance || 0), 0).toFixed(2);
+
+            return {
+                Employee: employee.Name,
+                DateRange: `${new Date(fromDate).toLocaleDateString()} - ${new Date(toDate).toLocaleDateString()}`,
+                TotalVisits: dealerVisits.length,
+                TotalDistance: `${totalDistance} km`,
             };
+        });
 
-            fetchVisits();
-        }
-    }, [selectedEmpId, selectedDate]);
+        const csvContent = [
+            ["Employee", "Date Range", "Total Visits", "Total Distance (km)"],
+            ...summaryData.map((row) => Object.values(row)),
+        ]
+            .map((e) => e.join(","))
+            .join("\n");
 
-    const handleEmpChange = (event) => {
-        setSelectedEmpId(event.target.value);
-        setVisits([]); // Reset visits when a new employee is selected
-        setSelectedDate(''); // Reset date when a new employee is selected
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        saveAs(blob, "summary_report.csv");
     };
 
-    const handleDateChange = (event) => {
-        setSelectedDate(event.target.value);
-    };
+    const exportDetailToCSV = () => {
+    const csvData = visits
+        .filter((visit) => visit.SourceEvent !== 'In' && visit.SourceEvent !== 'Out')  // Only export dealer visits
+        .map((visit) => ({
+            Employee: employees.find((emp) => emp.EmpId === visit.EmpId)?.Name || "N/A",
+            Event: visit.SourceEvent,
+            DateTime: `"${new Date(visit.SourceTime).toLocaleString()}"`,  // Enclose DateTime in quotes
+            Distance: `${visit.Distance} km`,
+        }));
+
+    const csvContent = [
+        ["Employee", "Event", "DateTime", "Distance (km)"],
+        ...csvData.map((row) => Object.values(row)),
+    ]
+        .map((e) => e.join(","))
+        .join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    saveAs(blob, "detailed_report.csv");
+};
+
+
+    const filterDealerVisits = (visits) =>
+        visits.filter((visit) => visit.SourceEvent !== 'In' && visit.SourceEvent !== 'Out');
 
     return (
+        <>
         <Box sx={{ padding: 2 }}>
             <Typography variant="h5" component="h2" sx={{ marginBottom: 2 }}>
-                Visits Report
+                Visit Report
             </Typography>
 
-            <FormControl variant="outlined" sx={{ mb: 2, width: "200px" }}>
-                <InputLabel>Select Employee</InputLabel>
-                <Select
-                    value={selectedEmpId}
-                    onChange={handleEmpChange}
-                    label="Select Employee"
-                >
-                    {employees.map((employee) => (
-                        <MenuItem key={employee.EmpId} value={employee.EmpId}>
-                            {employee.Name}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
+            {/* Date Range Controls */}
+            <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+                <TextField
+                    label="From Date"
+                    type="date"
+                    variant="outlined"
+                    size="small"
+                    value={fromDate}
+                    onChange={(e) => handleDateChange(e, "from")}
+                    sx={{ width: "200px" }}
+                    InputLabelProps={{ shrink: true }}
+                />
 
-            <TextField
-                label="Filter by Date"
-                type="date"
-                variant="outlined"
-                value={selectedDate}
-                onChange={handleDateChange}
-                sx={{ mb: 2, width: "200px" }}
-                InputLabelProps={{
-                    shrink: true,
-                }}
-            />
+                <TextField
+                    label="To Date"
+                    type="date"
+                    variant="outlined"
+                    size="small"
+                    value={toDate}
+                    onChange={(e) => handleDateChange(e, "to")}
+                    sx={{ width: "200px" }}
+                    InputLabelProps={{ shrink: true }}
+                />
 
-            {loading ? (
-                <CircularProgress />
-            ) : error ? (
-                <Typography color="error">{error}</Typography>
-            ) : visits.length > 0 ? (
-                <TableContainer component={Paper}>
-                    <Table>
-                        <TableHead style={{ backgroundColor: '#084606' }}>
-                            <TableRow>
-                                <TableCell style={{ color: 'white' }}>Visit ID</TableCell>
-                                <TableCell style={{ color: 'white' }}>Source </TableCell>
-                               
-                                <TableCell style={{ color: 'white' }}>Destination </TableCell>
-                               
-                                <TableCell style={{ color: 'white' }}>Distance (km)</TableCell>
-                                <TableCell style={{ color: 'white' }}>Visit Date</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {visits.map((visit) => (
-                                <TableRow key={visit.Id}>
-                                    <TableCell>{visit.Id}</TableCell>
-                                    <TableCell sx={{color:"orange"}}>
-                                        <a 
-                                            href={`https://www.google.com/maps/search/?api=1&query=${visit.SourceLatLong}`} 
-                                            target="_blank" 
-                                            rel="noopener noreferrer"
-                                        >
-                                          {visit.SourceTime}
-                                        </a>
-                                    </TableCell>
-                                    <TableCell sx={{color:"orange"}}>
-                                        <a 
-                                            href={`https://www.google.com/maps/search/?api=1&query=${visit.DestinationLatLong}`} 
-                                            target="_blank" 
-                                            rel="noopener noreferrer"
-                                        >
-                                            {visit.DestinationTime}
-                                        </a>
-                                    </TableCell>
-                                    <TableCell>{visit.Distance} kms</TableCell>
-                                    <TableCell>{new Date(visit.VisitDateTime).toLocaleDateString()}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            ) : (
-                <Typography>No visits data available. Please select an employee.</Typography>
-            )}
-        </Box>
+                <Button variant="contained" onClick={exportSummaryToCSV} size="small" style={{backgroundColor:'#084606'}}>
+                     Summary  <GetAppIcon/>
+                </Button>
+                <Button variant="contained" onClick={exportDetailToCSV} size="small" style={{backgroundColor:'#084606'}}>
+                     Detailed  <GetAppIcon/>
+                </Button>
+            </Box>
+
+           
+            </Box>
+            <AttendanceReport/>
+        </>
+        
     );
 };
 

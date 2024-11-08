@@ -15,7 +15,7 @@ function DealerList() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     useEffect(() => {
         const fetchDealers = async () => {
@@ -91,27 +91,27 @@ function DealerList() {
 
     return (
         <Box>
-           
             <Button
                 variant="contained"
                 color="primary"
                 onClick={exportToCsv}
                 style={{ marginBottom: '16px', backgroundColor: "#084606", float: "right" }}
+                size='small'
             >
                 Export CSV
             </Button>
             <TableContainer component={Paper}>
-                <Table>
+                <Table size='small'>
                     <TableHead style={{ backgroundColor: "#084606" }}>
                         <TableRow>
                             <TableCell style={{ color: "white" }}>ID</TableCell>
                             <TableCell style={{ color: "white" }}>Employee</TableCell>
                             <TableCell style={{ color: "white" }}>Company Name</TableCell>
                             <TableCell style={{ color: "white" }}> Name</TableCell>
-                            <TableCell style={{ color: "white" }}>Address</TableCell>
+                            {/* <TableCell style={{ color: "white" }}>Address</TableCell> */}
                             <TableCell style={{ color: "white" }}>Contact Info</TableCell>
                            
-                            <TableCell style={{ color: "white" }}>Email</TableCell>
+                            {/* <TableCell style={{ color: "white" }}>Email</TableCell> */}
                              <TableCell style={{ color: "white" }}>Date</TableCell>
                           
                             {/* {user && user.role === 'HR' && <TableCell style={{ color: "white" }}>Actions</TableCell>} */}
@@ -126,9 +126,9 @@ function DealerList() {
                                     <TableCell>{dealer.AddedByName}</TableCell>
                                     <TableCell>{dealer.CompanyName}</TableCell>
                                     <TableCell>{dealer.DealerName}</TableCell>
-                                    <TableCell>{dealer.Address}</TableCell>
+                                    {/* <TableCell>{dealer.Address}</TableCell> */}
                                     <TableCell>{dealer.ContactInfo}</TableCell>
-                                    <TableCell>{dealer.MailId}</TableCell>
+                                    {/* <TableCell>{dealer.MailId}</TableCell> */}
                                     <TableCell>
                                    {new Date(dealer.datetime).toLocaleDateString('en-GB').replace(/\//g, '-')}
                                        </TableCell>
